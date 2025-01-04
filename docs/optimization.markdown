@@ -22,7 +22,7 @@ There are dozens of recurring optimization problems. To describe and solve them,
 
 {% include video.html src="/assets/traveling_salesman.mp4" %}
 
-_An example of an optimisation problem, the [travelling salesman](https://en.wikipedia.org/wiki/Travelling_salesman_problem), being solved with the CP-SAT solver._
+_An example of an optimisation problem, the [travelling salesman](https://en.wikipedia.org/wiki/Travelling_salesman_problem), being solved with the CP-SAT solver. Try [a demo here](https://cpsat-embeddings-demo.streamlit.app)._
 
 # My story with optimization
 
