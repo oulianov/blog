@@ -48,7 +48,7 @@ Looking for something like _non-linear solvers_, I found OR Tools and CP-SAT.
 
 [Google OR Tools](https://developers.google.com/optimization/install) is an open source framework to describe and solve several optimization problems. The most powerful solver available is called CP-SAT, whose name is a combination of CP _**C**onstrained **P**rogramming_ and _Boolean **Sat**isfaction Problems_.
 
-### The magic
+### OR Tools is ridiculously versatile
 
 OR Tools greatly simplifies the definition of several problems. For example, the traveling salesman, which is about finding the route of a salesman accross multiple cities, such that the total distance is minimal.
 
