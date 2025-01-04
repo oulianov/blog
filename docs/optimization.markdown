@@ -17,7 +17,6 @@ In the real world, there are many occasions where you need to find the _optimal 
 - transportation (finding the best route for a truck delivering packages)
 - manufacturing and chemistry (line of productions)
 - rigid body dynamics (making robots move)
-- ...
 
 There are dozens of recurring optimization problems. To describe and solve them, you use [solvers](https://en.wikipedia.org/wiki/List_of_optimization_software), like [Gurobi](https://www.gurobi.com) or [PyOmo](http://www.pyomo.org).
 
@@ -146,21 +145,21 @@ Or
 x: 1, y: 99, Solution is: 99
 ```
 
-When I saw this, my mind was blown, and OR Tools became my favorite tool for modelling insane problems.
+When I saw this, my mind was blown, and OR Tools became my favorite tool for modelling the insane business requirements the project manager kept coming up with.
 
 ### What's the difference between CP-SAT and Linear Programming?
 
 In Linear Programming, the goal is to describe your function as a linear one, aka a matrix $$A$$. Then, you're looking for the vector $$x$$ that minimizes $$Ax$$ according to some constraints. The easiest way to solve the problem is to perform operations on rows of $$A$$, as if you were solving a linear system.
 
-By contrast, SAT is a different world. The problem is reframed as solving boolean expressions, such as `(X and Y) or (X and (not Z))`. This is done by exploring a graph of those clauses.
+By contrast, SAT is a different world. The problem is reframed as solving boolean expressions, such as `(X and Y) or (X and (not Z))`. This is done by exploring a graph of those clauses. You may find value in the talk [Search is Dead, Long Live Proof](https://people.eng.unimelb.edu.au/pstuckey/PPDP2013.pdf) that talk about this.
 
 From what I understand, CP-SAT combines those two approaches with tons of heuristics to solve very diverse problems, very efficiently. A cost of this approach is that CP-SAT doesn't support decimal numbers, for example.
 
-I won't lie, learning material around CP-SAT is quite scarce and not as welcoming as other modules.
+I won't lie, learning material around CP-SAT is quite scarce and OR Tools may not look as welcoming as other modules. Despite being around since 2011 and extremly performant, it's still niche.
 
-- If you're a search expert, you may find value in the talk [Search is Dead, Long Live Proof](https://people.eng.unimelb.edu.au/pstuckey/PPDP2013.pdf).
 - If you're starting out, [the CP SAT primer](https://d-krupke.github.io/cpsat-primer/07_under_the_hood.html) by Dominik Krupke is a great place to start. And I wish it existed when I started working on this EV project!
 - If you're looking for tips and tricks, I created [a repository with multiple notebooks](https://github.com/oulianov/cp-sat-fun) exposing various tricks I used during my EV project - some undcoumented.
+- And here is a [compilation](https://github.com/google/or-tools/discussions/4237) of many relevant resources to dive deepr.
 
 But the all-knowning, infinite, omniscient source of knowledge around CP-SAT is no one than [Laurent Perron](https://www.linkedin.com/in/laurentperron/?originalSubdomain=fr), the author of CP-SAT, OR Tools, and current Google tech lead of operations Research. If you're searching for questions online about OR tools, he's likely to be the one directly answering. On [the OR Tools Discord](https://discord.gg/ENkQrdf), he's extremly reactive and always super sharp.
 
