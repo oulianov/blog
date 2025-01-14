@@ -58,9 +58,9 @@ No... Come on, that's just a silly coincidence ;)
 
 After the hackathon, this project received unexpected echo on social media.
 
-Turns out people loved Street Fighter and loved LLM fighting to be the best one!
+Turns out people loved Street Fighter and loved LLMs fighting!
 
-Here is a compilation of some of the cool stuff people said about it.
+Here is a compilation of some of the cool stuff people shared about us.
 
 ### Youtube
 
