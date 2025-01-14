@@ -149,9 +149,9 @@ In Linear Programming, the goal is to describe your function as a linear one, ak
 
 By contrast, SAT is a different world. The problem is reframed as solving boolean expressions, such as `(X and Y) or (X and (not Z))`. This is done by exploring a graph of those clauses. You may find value in the talk [Search is Dead, Long Live Proof](https://people.eng.unimelb.edu.au/pstuckey/PPDP2013.pdf) that talk about this.
 
-From what I understand, CP-SAT combines those two approaches with tons of heuristics to solve very diverse problems, very efficiently. A cost of this approach is that CP-SAT doesn't support decimal numbers, for example.
+From what I understand, CP-SAT translates your Constraint Programming problem into a SAT problem. For example, you write "I want $$a<b, 0 \leq a \leq 2, 0 \leq b \leq 2$$", and CP-SAT compiles it to `(a=0 and b=1) or (a=1 and b=2) or (a=0 and b=2)`. It has tons of heuristics to do this very efficiently. The cost to this approach is that CP-SAT doesn't support decimal numbers. I found [this video](https://www.youtube.com/watch?v=lmy1ddn4cyw) helpful to build an intuition around CP-SAT.
 
-I won't lie, learning material around CP-SAT is quite scarce and OR Tools may not look as welcoming as other modules. Despite being around since 2011 and extremly performant, it's still niche.
+Learning material around CP-SAT is quite scarce and OR Tools may not look as welcoming as other modules. Despite being around since 2011 and extremly performant, it's still niche.
 
 - If you're starting out, [the CP SAT primer](https://d-krupke.github.io/cpsat-primer/07_under_the_hood.html) by Dominik Krupke is a great place to start. And I wish it existed when I started working on this EV project!
 - If you're looking for tips and tricks, I created [a repository with multiple notebooks](https://github.com/oulianov/cp-sat-fun) exposing various tricks I used during my EV project - some undcoumented.
