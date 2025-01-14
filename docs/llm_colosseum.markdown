@@ -48,7 +48,7 @@ We didn't win anything at the hackathon.
 
 Indeed, a much more impressive [fine-tuned Mistral](https://github.com/umuthopeyildirim/DOOM-Mistral) and a similar [Mistral playing Pacman](https://devpost.com/software/ai-vision-pacman-agent) were featured.
 
-Or you know, maybe, just maybe, it was because OpenAI GPT-3.5 model was better than the Mistral-7b model on our benchmark...
+Or you know, maybe, just maybe, it was because the GPT-3.5 model by OpenAI was better than the Mistral-7b model on our benchmark...
 
 No... Come on, that's just a silly coincidence ;)
 
