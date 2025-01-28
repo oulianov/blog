@@ -6,7 +6,7 @@ source "https://rubygems.org"
 #     bundle exec jekyll serve
 #
 # This will help ensure the proper Jekyll version is running.
-gem "jekyll", "~> 4.3.4"
+gem "jekyll", "~> 4.4.0"
 
 gem "just-the-docs", "0.10.1" # pinned to the current release
 
