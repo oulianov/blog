@@ -10,7 +10,7 @@ title: "Home"
 
 I build AI products by programming and talking a lot.
 
-![Nicolas Oulianov]({{ site.baseurl }}/assets/avatar.jpg){: width="200" }
+![Nicolas Oulianov]({{ site.baseurl }}/assets/avatar2.jpg){: width="200" }
 
 - 2023 - Joined [phospho (YC W24)](https://phospho.ai), an AI startup, as a **Founding Engineer** (first employee). I accelerate the adoption of the latest AI technologies in Paris and San Francisco.
 - 2022-2023 - Joined the consulting firm _[QuantumBlack, AI by McKinsey](https://www.mckinsey.com/capabilities/quantumblack/how-we-help-clients)_ as a **Data Scientist**. I traveled accross Europe to help large companies progress on GenAI, future mobility, and business analytics.
