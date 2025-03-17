@@ -15,7 +15,7 @@ In the real world, there are many occasions where you need to find the _optimal 
 
 - economics and finance (planification and resource allocation)
 - transportation (finding the best route for a truck delivering packages)
-- manufacturing and chemistry (line of productions)
+- manufacturing and chemistry (production lines)
 - rigid body dynamics (making robots move)
 
 There are dozens of recurring optimization problems. To describe and solve them, you use [solvers](https://en.wikipedia.org/wiki/List_of_optimization_software), like [Gurobi](https://www.gurobi.com) or [PyOmo](http://www.pyomo.org).
