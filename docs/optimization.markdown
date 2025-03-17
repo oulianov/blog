@@ -155,7 +155,7 @@ Learning material around CP-SAT is quite scarce and OR Tools may not look as wel
 
 - If you're starting out, [the CP SAT primer](https://d-krupke.github.io/cpsat-primer/07_under_the_hood.html) by Dominik Krupke is a great place to start. And I wish it existed when I started working on this EV project!
 - If you're looking for tips and tricks, I created [a repository with multiple notebooks](https://github.com/oulianov/cp-sat-fun) exposing various tricks I used during my EV project - some undocumented.
-- And here is a [compilation](https://github.com/google/or-tools/discussions/4237) of many relevant resources to dive deepr.
+- And here is a [compilation](https://github.com/google/or-tools/discussions/4237) of many relevant resources to dive deeper.
 
 But the all-knowning, infinite, omniscient source of knowledge around CP-SAT is no one than [Laurent Perron](https://www.linkedin.com/in/laurentperron/?originalSubdomain=fr), the author of CP-SAT, OR Tools, and current Google tech lead of operations Research. If you're searching for questions online about OR tools, he's likely to be the one directly answering. On [the OR Tools Discord](https://discord.gg/ENkQrdf), he's extremly reactive and always super sharp.
 
