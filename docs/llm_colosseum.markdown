@@ -110,15 +110,15 @@ I later worked with Sarit Schube and Mark Heaps from Groq [to release the web ve
 
 ### Modal
 
-In July–August 2025, Andrew Hihn (aka ajhinh, a CS undergrad interning at Modal), messaged me with a cheeky idea: make a browser-playable SF3 where the opponent is an RL-trained LLM.
+In July–August 2025, Andrew Hihn (aka ajhinh, a CS undergrad interning at Modal), messaged me with a cheeky idea: make a browser-playable SF3 where the opponent is an RL-trained LLM. [Try the demo here!](https://modal-labs-examples--sf3-web-app.modal.run)
 
 In the web version I made for the Groq colab, I ran the MAME emulator directly in the browser by compiling it with EMScripten. But for his verison, Andrew had the idea to run the emulator in a Modal sandbox, and stream the images using high performance websockets, to showcase this new feature. A great architecture that allowed him to get the best of both worlds.
 
 Moreover, he used a YOLO sprite detector to detect the players' positions (instead of hardcoded pixel colors values) and ran self-play to improve the model. He also leveraged the Modal GPU infrastructure to run inference for fine-tuned open source model such as Qwen3-8B that beat GPT-5.
 
-![YOLO sprite detection](https://github.com/modal-labs/sf3/blob/main/assets/readme/val_batch0_pred.jpg)
+![YOLO sprite detection]({{ site.baseurl }}/assets/sf_yolo.jpg)
 
-![self play](https://github.com/modal-labs/sf3/blob/main/assets/readme/training_rl.png)
+![self play]({{ site.baseurl }}/assets/sf_training_rl.png)
 
 Best part? [His work is open source, right here](https://github.com/modal-labs/sf3). This is a super cool extension of LLM Colosseum and honestly what I wished I had time to do and explore. Reach out to Andrew [on Linkedin!](https://www.linkedin.com/in/andrew-hinh/)
 
