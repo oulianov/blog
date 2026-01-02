@@ -8,7 +8,7 @@ source "https://rubygems.org"
 # This will help ensure the proper Jekyll version is running.
 gem "jekyll", "~> 4.4.0"
 
-gem "just-the-docs", "0.10.2" # pinned to the current release
+gem "just-the-docs", "0.11.0" # pinned to the current release
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
