@@ -7,9 +7,9 @@ categories:
 
 # Neural Analog
 
-[Neural Analog](https://neuralanalog.com) is the AI audio platform I am working on now.
+[Neural Analog](https://neuralanalog.com) is the audio platform I am working on now.
 
-It helps musicians, producers, AI music creators, podcasters, and audio engineers import rough audio and run GPU-based processing pipelines on it. The core workflow is simple: upload a file or import from an AI music platform, restore missing frequencies, split stems, clean up artifacts, master the result, and export production-ready audio.
+It helps musicians, producers, AI music creators, podcasters, and audio engineers import rough audio and run GPU-based processing pipelines on it. Upload a file or import from an AI music platform, restore missing frequencies, split stems, clean up artifacts, master the result, and export production-ready audio.
 
 The project brings together several tools that are usually scattered across separate workflows:
 

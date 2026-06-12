@@ -12,7 +12,7 @@ I build AI products by programming and talking a lot.
 
 ![Nicolas Oulianov]({{ site.baseurl }}/assets/avatar2.jpg){: width="200" }
 
-- 2025- - I'm now working on [Neural Analog](https://neuralanalog.com), an AI audio platform for upscaling, stem splitting, restoration, and mastering with GPU-based models.
+- 2025- I'm building [Neural Analog](https://neuralanalog.com), a platform for creatives to improve audio quality with GPU-based models.
 - 2023-2025 - Joined [phospho (YC W24)](https://phospho.ai), an AI startup, as a **Founding Engineer** (first employee). I accelerated the adoption of the latest AI technologies in Paris and San Francisco. Most notably, we built [the open source platform phosphobot](https://docs.phospho.ai/welcome) to let you train special AI models ([VLA](https://en.wikipedia.org/wiki/Vision-language-action_model)) that control robots.
 - 2022-2023 - Joined the consulting firm _[QuantumBlack, AI by McKinsey](https://www.mckinsey.com/capabilities/quantumblack/how-we-help-clients)_ as a **Data Scientist**. I traveled accross Europe to help large companies progress on GenAI, future mobility, and business analytics.
 - 2021-2022 - Joined [Ynstant](https://www.ynstant.io), a carpooling startup, as a **co-founder**. I'll never forget when I actually got into a car thanks to the app I built from scratch. Student loans stopped me in this adventure.
