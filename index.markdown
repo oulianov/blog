@@ -10,7 +10,7 @@ title: "Home"
 
 I build AI products by programming and talking a lot.
 
-![Nicolas Oulianov]({{ site.baseurl }}/assets/face_crop.jpg){: width="200" }
+![Nicolas Oulianov]({{ site.baseurl }}/assets/face_crop_hq2.png){: width="200" }
 
 - 2025- I'm building [Neural Analog](https://neuralanalog.com), a platform for creatives to improve audio quality with GPU-based models.
 - 2023-2025 - Joined [phospho (YC W24)](https://phospho.ai), an AI startup, as a **Founding Engineer** (first employee). I accelerated the adoption of the latest AI technologies in Paris and San Francisco. Most notably, we built [the open source platform phosphobot](https://docs.phospho.ai/welcome) to let you train special AI models ([VLA](https://en.wikipedia.org/wiki/Vision-language-action_model)) that control robots.
