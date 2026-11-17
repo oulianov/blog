@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "LLM Colosseum"
+nav_order: 6
 date: 2025-01-14 17:55:06 +0100
 categories:
 ---

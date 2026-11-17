@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "NLP"
+nav_order: 8
 date: 2025-03-18 17:55:06 +0100
 categories:
 ---

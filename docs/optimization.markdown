@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Optimization"
+nav_order: 7
 date: 2025-01-04 17:55:06 +0100
 categories:
 ---
