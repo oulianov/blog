@@ -23,13 +23,13 @@ Every layer has its own surprises. I discovered most of them the hard way.
 
 # My story with robotics
 
-In 2025, I was working as a founding engineer at phospho. We built [phosphobot](https://github.com/phospho-app/phosphobot), an open source platform to control robots, record datasets and train VLA models like [ACT](https://tonyzhaozh.github.io/aloha/) or [GR00T](https://github.com/NVIDIA/Isaac-GR00T) on low-cost robot arms like the [SO-100](https://github.com/TheRobotStudio/SO-ARM100).
+In 2025, I was working as a founding engineer in a YC company. We built [phosphobot](https://github.com/phospho-app/phosphobot), an open source platform to control robots, record datasets and train VLA models like [ACT](https://tonyzhaozh.github.io/aloha/) or [GR00T](https://github.com/NVIDIA/Isaac-GR00T) on low-cost robot arms like the [SO-100](https://github.com/TheRobotStudio/SO-ARM100).
 
 I graduated from an Engineering school called Télécom Paris. But I'm a Data Science engineer, not a Robotics engineer, and my knowledge of physics at the time was pretty basic. So I had to learn from scratch, by building in public and reaching out to builders from across the world on Discord.
 
-At first, I thought the hard part would be training the AI models. I was wrong. The hard parts were heat, documentation, network jitter and file formats.
+At first, I thought the hard part would be training the AI models. I was wrong. The hard parts were everything around them: motors that are heavy, pricey and overheat, robots that each speak their own language, Wi-Fi that turns remote control into a networking problem, and data that's painfully slow to collect.
 
-Here is what reality taught me, from the motors up to the simulation.
+Here is what reality taught me, from the motors up to the data.
 
 ## Motors: the muscles are where it hurts
 
