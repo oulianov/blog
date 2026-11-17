@@ -6,8 +6,6 @@ date: 2025-03-18 17:55:06 +0100
 categories:
 ---
 
-Gosh. Do I love NLP.
-
 # My story with NLP
 
 NLP (Natural Language Processing) is a field of data science focused on solving tasks related to natural language, for example English or French. We try to make machines read human text and speech.
