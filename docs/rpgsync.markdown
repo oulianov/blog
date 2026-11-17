@@ -10,7 +10,7 @@ categories:
 
 A Python twin of your RPG Maker 2000/2003 game. rpgsync turns the events of your game into readable Python scripts, and keeps both sides in sync while you work.
 
-[Get started on GitHub](https://github.com/oulianov/rpgsync){: .btn .btn-primary } [Play the demo](https://conquestudios.itch.io/test-3d){: .btn }
+[Get started on PyPI](https://pypi.org/project/rpgsync/){: .btn .btn-primary } [Source code on GitHub](https://github.com/oulianov/rpgsync){: .btn }
 
 ![An event in the EasyRPG Editor and the same event as Python code, synced by rpgsync]({{ site.baseurl }}/assets/rpgsync/banner.png)
 
