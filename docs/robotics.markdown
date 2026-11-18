@@ -2,6 +2,12 @@
 layout: post
 title: "Robotics"
 nav_order: 5
+description: "What AI robotics is and how its stack works: motors, communication, teleoperation and data collection, and the models that learn to move robots."
+image:
+  path: /assets/robotics/og.jpg
+  width: 1200
+  height: 630
+  alt: "The ALOHA setup: two robot arms facing each other over a table"
 date: 2026-11-17 00:00:00 +0100
 categories:
 ---

@@ -2,6 +2,12 @@
 layout: post
 title: "LLM Colosseum"
 nav_order: 6
+description: "LLMs fight each other in real time in Street Fighter III. The story behind LLM Colosseum, a hackathon project with 1.4K stars on GitHub."
+image:
+  path: /assets/llm-colosseum/og.jpg
+  width: 1200
+  height: 630
+  alt: "A YOLO model spotting the Street Fighter III fighters in game frames"
 date: 2025-01-14 17:55:06 +0100
 categories:
 ---

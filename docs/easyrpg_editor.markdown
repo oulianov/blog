@@ -2,6 +2,12 @@
 layout: post
 title: "EasyRPG Editor"
 nav_order: 3
+description: "A modern, open source editor for RPG Maker 2000 and 2003 games on macOS, Windows and Linux, with web export, project-wide search and Maniac Patch support."
+image:
+  path: /assets/easyrpg-editor/og.jpg
+  width: 1200
+  height: 630
+  alt: "The EasyRPG Editor on macOS, editing a desert town map"
 date: 2026-11-17 00:00:00 +0100
 categories:
 ---

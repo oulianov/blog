@@ -2,6 +2,12 @@
 layout: post
 title: "rpgsync"
 nav_order: 4
+description: "A Python twin of your RPG Maker 2000/2003 game: edit your events as typed Python in your code editor, test them, and let AI agents work on your game."
+image:
+  path: /assets/rpgsync/og.png
+  width: 1200
+  height: 630
+  alt: "An event in the EasyRPG Editor and the same event as Python code, synced by rpgsync"
 date: 2026-11-17 00:00:00 +0100
 categories:
 ---

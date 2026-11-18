@@ -25,6 +25,8 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "https://oulianov.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: nicolasoulianov
+twitter:
+  username: nicolasoulianov
 github_username: oulianov
 
 # Build settings
@@ -74,5 +76,14 @@ defaults:
       type: "pages"
     values:
       layout: "default"
+  # the link preview of every page that has no image of its own
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /assets/og-default.jpg
+        width: 1200
+        height: 630
+        alt: "Nicolas Oulianov (oulianov): I build AI products by programming and talking a lot"
 
 math: katex

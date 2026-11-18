@@ -2,6 +2,7 @@
 layout: post
 title: "Podcasts"
 nav_order: 9
+description: "Podcast interviews: leaving consulting for an early-stage startup, life in San Francisco during Y Combinator, and building a carpooling startup."
 date: 2025-01-04 17:55:06 +0100
 categories:
 ---

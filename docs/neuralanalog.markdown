@@ -2,6 +2,12 @@
 layout: post
 title: "Neural Analog"
 nav_order: 2
+description: "A GPU-powered online studio for audio restoration, stem separation and mastering: turn old, muffled recordings into clean, release-ready audio."
+image:
+  path: /assets/neuralanalog/og.jpg
+  width: 1200
+  height: 630
+  alt: "Spectrogram of a recording before and after Neural Analog restoration"
 date: 2026-06-12 00:00:00 +0200
 categories:
 ---
