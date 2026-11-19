@@ -4,6 +4,7 @@ import { palette, type ColorName, type ShapeName } from '../../site.config.ts'
 import { pages, type PageMeta } from '../lib/pages.ts'
 import { Article } from './Article.tsx'
 import { Silhouette } from './Silhouette.tsx'
+import { SocialLinks } from './SocialLinks.tsx'
 
 const describe = (shape: ShapeName, color: ColorName) =>
   `A black ${shape} turning on ${color}. Click it or drag it.`
@@ -63,6 +64,7 @@ export function HomeHero({ heading, lead, bio }: { heading: string; lead?: strin
       </div>
       <div className="home-bio">
         <Article html={bio} />
+        <SocialLinks />
       </div>
     </header>
   )

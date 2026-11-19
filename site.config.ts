@@ -13,10 +13,12 @@ export const site = {
     height: 630,
     alt: 'Nicolas Oulianov (oulianov): I build AI products by programming and talking a lot',
   },
+  // In the sidebar, and as icons under the contact line of the home page.
   externalLinks: [
-    { title: 'GitHub', url: 'https://github.com/oulianov' },
-    { title: 'LinkedIn', url: 'https://www.linkedin.com/in/nicolas-oulianov/' },
-  ],
+    { title: 'GitHub', url: 'https://github.com/oulianov', icon: 'github' },
+    { title: 'LinkedIn', url: 'https://www.linkedin.com/in/nicolas-oulianov/', icon: 'linkedin' },
+    { title: 'X', url: 'https://x.com/nicolasoulianov', icon: 'x' },
+  ] as const,
 }
 
 // The four colors, one per season: pink is spring, green summer,
