@@ -26,15 +26,15 @@ const articles = pages.filter((page) => page.path !== '/')
 const home = pages.find((page) => page.path === '/')
 
 // The home model first, then one per article: a click swaps to the next.
-const heroCycle: Array<{ shape: ShapeName; color: ColorName; page?: PageMeta }> = [
+const heroCycle: Array<{ shape: ShapeName; color: ColorName }> = [
   { shape: home?.shape ?? 'laptop', color: 'orange' },
-  ...articles.map((page) => ({ shape: page.shape, color: page.color, page })),
+  ...articles.map((page) => ({ shape: page.shape, color: page.color })),
 ]
 
 /**
  * The home page header, which is also the "about me": the name, very big,
  * the bio, and the laptop with my face on its screen. A click on the laptop
- * swaps it for the model of each article in turn.
+ * swaps it for the model of each article in turn, my face on each.
  */
 export function HomeHero({ heading, lead, bio }: { heading: string; lead?: string; bio: string }) {
   const [index, setIndex] = useState(0)
@@ -55,17 +55,10 @@ export function HomeHero({ heading, lead, bio }: { heading: string; lead?: strin
         <div className="home-hero-stage">
           <Silhouette
             shapes={heroCycle.map((item) => item.shape)}
-            screenImage="/assets/face-screen.jpg"
-            label="Nicolas Oulianov's face on the screen of a black laptop. Click it to see the next model."
+            photo="/assets/face-screen.webp"
+            label="Nicolas Oulianov's face on a black laptop. Click it for the next model."
             onSwap={setIndex}
           />
-          {current.page && (
-            <p className="hero-caption">
-              <Link to="/docs/$slug/" params={{ slug: current.page.slug }}>
-                {current.page.title} <span aria-hidden="true">→</span>
-              </Link>
-            </p>
-          )}
         </div>
       </div>
       <div className="home-bio">

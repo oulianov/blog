@@ -336,31 +336,6 @@ img {
   height: min(100vh, 52rem);
 }
 
-.hero-caption {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 1;
-  margin: 0;
-}
-
-.hero-caption > * {
-  display: inline-block;
-  padding: 0.4rem 0.95rem;
-  border-radius: 999px;
-  background: var(--white);
-  color: var(--black);
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none;
-  box-shadow: 0 0 0 2px var(--black);
-}
-
-.hero-caption a:hover {
-  background: var(--black);
-  color: var(--white);
-}
-
 /* The bio, on the color: black text, black links, years as black tags. */
 
 .home-bio {
@@ -405,28 +380,34 @@ img {
 }
 
 
-/* Everything after the first entry folds under a "More" button. */
+/*
+ * Everything after the first entry folds away. The button is a round arrow
+ * on the end of the divider; its words, More and Less, are for screen readers.
+ */
 
 .home-bio .more {
+  position: relative;
   margin: 0 0 2rem;
-  padding-top: 1rem;
   border-top: 2px solid var(--black);
+  /* Opened, it scrolls to here: room above for the button. */
+  scroll-margin-top: 2.5rem;
 }
 
 .home-bio .more > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 1.15rem;
-  border-radius: 999px;
+  position: absolute;
+  top: -1px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
   background: var(--black);
   color: var(--white);
-  font-weight: 700;
-  font-size: 1rem;
   cursor: pointer;
   list-style: none;
-  user-select: none;
-  transition: transform 140ms ease;
+  transform: translateY(-50%);
+  transition: transform 160ms ease;
 }
 
 .home-bio .more > summary::-webkit-details-marker {
@@ -434,16 +415,30 @@ img {
 }
 
 .home-bio .more > summary::after {
-  content: '↓';
+  content: '';
+  width: 0.62rem;
+  height: 0.62rem;
+  border-right: 2.5px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  transform: translateY(-20%) rotate(45deg);
   transition: transform 300ms ease;
 }
 
 .home-bio .more[open] > summary::after {
-  transform: rotate(180deg);
+  transform: translateY(20%) rotate(225deg);
 }
 
 .home-bio .more > summary:hover {
-  transform: translateY(-2px);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.home-bio .more > summary > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .home-bio .more .show-less,
@@ -455,8 +450,9 @@ img {
   display: inline;
 }
 
-.home-bio .more[open] > summary {
-  margin-bottom: 1rem;
+/* Open, the divider above the button is the top line of the first entry. */
+.home-bio .more > ul > li.dated:first-child {
+  border-top: 0;
 }
 
 .home-bio .more > ul {
@@ -926,6 +922,11 @@ img {
   .home-bio li.dated {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.35rem;
+  }
+
+  /* Below the sticky top bar. */
+  .home-bio .more {
+    scroll-margin-top: 6rem;
   }
 
   .wall {

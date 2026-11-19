@@ -2,8 +2,9 @@
 // them into HTML at build time. Used by the Vite plugin and the post-build
 // script.
 
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
+import { imageSize } from 'image-size'
 import { parse as parseYaml } from 'yaml'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
@@ -127,7 +128,7 @@ function replaceLiquid(body: string, file: string): string {
     )
     if (name === 'youtubePlayer.html') {
       return (
-        `<div class="embed"><iframe src="https://www.youtube.com/embed/${escapeAttribute(params.id)}" ` +
+        `<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${escapeAttribute(params.id)}" ` +
         `title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ` +
         `allowfullscreen></iframe></div>`
       )
@@ -248,13 +249,58 @@ function foldTimeline(options?: { enabled: boolean }) {
   }
 }
 
-/** Lazy images (but the first one, often in view), and tables that scroll on small screens. */
-function polishElements() {
+/**
+ * A picture of the site: its .webp copy when there is one (scripts/webp.ts),
+ * and its size, read from the file.
+ */
+function localPicture(src: string): { src: string; width: number; height: number; small?: string } | undefined {
+  if (!src.startsWith('/assets/')) return undefined
+  const original = path.join(root, 'public', decodeURIComponent(src))
+  const webp = original.replace(/\.(jpe?g|png)$/i, '.webp')
+  const served = webp !== original && existsSync(webp) ? webp : original
+  if (!existsSync(served)) return undefined
+  const { width, height } = imageSize(readFileSync(served))
+  if (!width || !height) return undefined
+  if (served !== webp) return { src, width, height }
+  // The 800 px copy for phones, when the picture is wider than that.
+  const small = existsSync(webp.replace(/\.webp$/, '-800w.webp')) ? src.replace(/\.(jpe?g|png)$/i, '-800w.webp') : undefined
+  return { src: src.replace(/\.(jpe?g|png)$/i, '.webp'), width, height, small }
+}
+
+/**
+ * Pictures: served as WebP when they can be, with their width and height so
+ * the page doesn't jump as they load, and lazy, but for the first one, often
+ * in view (unless it's hidden, as on the home page). Tables scroll on small
+ * screens.
+ */
+function polishElements(options?: { eagerFirstImage: boolean }) {
   return (tree: Root) => {
     let images = 0
     visit(tree, 'element', (node, index, parent) => {
       if (node.tagName === 'img') {
-        if (images++ > 0) node.properties.loading ??= 'lazy'
+        const picture = localPicture(String(node.properties.src ?? ''))
+        if (picture) {
+          node.properties.src = picture.src
+          const { width, height } = node.properties
+          const style = String(node.properties.style ?? '')
+          const maxHeight = Number(style.match(/max-height:\s*(\d+)px/)?.[1] ?? Infinity)
+          if (width === undefined && height === undefined) {
+            // The size it shows at: its own, or smaller to fit an inline max-height.
+            const shownHeight = Math.min(picture.height, maxHeight)
+            node.properties.width = Math.round((shownHeight * picture.width) / picture.height)
+            node.properties.height = shownHeight
+            // Full width of the text column: phones take the small copy.
+            if (picture.small && !style) {
+              node.properties.srcSet = `${picture.small} 800w, ${picture.src} ${picture.width}w`
+              node.properties.sizes = '(max-width: 52rem) calc(100vw - 2.5rem), 44rem'
+            }
+          } else if (width !== undefined && height === undefined) {
+            node.properties.height = Math.round((Number(width) * picture.height) / picture.width)
+          }
+        }
+        const eager = images++ === 0 && options?.eagerFirstImage
+        if (eager) node.properties.fetchPriority ??= 'high'
+        else node.properties.loading ??= 'lazy'
         node.properties.decoding ??= 'async'
       }
       if (node.tagName === 'table' && parent && index !== undefined) {
@@ -294,11 +340,13 @@ export async function renderPage(file: string): Promise<RenderedPage> {
       properties: { className: ['anchor'], ariaHidden: 'true', tabIndex: -1 },
       content: { type: 'text', value: '#' },
     })
-    .use(polishElements)
+    .use(polishElements, { eagerFirstImage: !isHome })
     .use(rehypeShiki, {
       theme: 'vitesse-black',
       defaultLanguage: 'text',
       fallbackLanguage: 'text',
+      // The theme's comments are too dim to read on black.
+      colorReplacements: { '#758575dd': '#a3b0a3' },
     })
     .use(rehypeStringify)
 

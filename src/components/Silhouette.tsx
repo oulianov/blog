@@ -10,15 +10,15 @@ interface SilhouetteProps {
   interactive?: boolean
   hopOnHover?: boolean
   onSwap?: (index: number) => void
-  /** A picture for the laptop's screen. */
-  screenImage?: string
+  /** A photo for the models' photo spots (my face, on the home page). */
+  photo?: string
 }
 
 /**
  * A black 3D model on a flat color, with one white detail.
- * The 3D code loads once the frame is near the screen.
+ * The 3D code loads once the frame is near the screen and the browser is idle.
  */
-export function Silhouette({ shapes, label, interactive = true, hopOnHover = false, onSwap, screenImage }: SilhouetteProps) {
+export function Silhouette({ shapes, label, interactive = true, hopOnHover = false, onSwap, photo }: SilhouetteProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const onSwapRef = useRef(onSwap)
   onSwapRef.current = onSwap
@@ -39,18 +39,26 @@ export function Silhouette({ shapes, label, interactive = true, hopOnHover = fal
             interactive,
             hopOnHover,
             onSwap: (index) => onSwapRef.current?.(index),
-            screenImage,
+            photo,
           })
         } catch {
           // No WebGL: the flat color stays on its own.
         }
       })
 
+    // Start once the browser is idle, so the page loads and responds first.
+    // (Safari has no requestIdleCallback: a short timeout stands in.)
+    const hasIdle = typeof window.requestIdleCallback === 'function'
+    let idle = 0
+    const whenIdle = (callback: () => void) =>
+      hasIdle ? window.requestIdleCallback(callback, { timeout: 2000 }) : window.setTimeout(callback, 200)
+    const cancelIdle = (id: number) => (hasIdle ? window.cancelIdleCallback(id) : window.clearTimeout(id))
+
     const near = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
         near.disconnect()
-        mount()
+        idle = whenIdle(() => void mount())
       },
       { rootMargin: '400px' },
     )
@@ -59,9 +67,10 @@ export function Silhouette({ shapes, label, interactive = true, hopOnHover = fal
     return () => {
       cancelled = true
       near.disconnect()
+      cancelIdle(idle)
       dispose?.()
     }
-  }, [key, interactive, hopOnHover, screenImage])
+  }, [key, interactive, hopOnHover, photo])
 
   return (
     <div

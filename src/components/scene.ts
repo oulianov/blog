@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import type { ShapeName } from '../../site.config.ts'
-import { buildModel, type Model } from './models.ts'
+import { buildModel, type Model, type PhotoSpot } from './models.ts'
 
 export interface SceneOptions {
   /** The models; with several, a click swaps to the next one. */
@@ -11,8 +11,8 @@ export interface SceneOptions {
   hopOnHover: boolean
   /** Called when a click swaps the model. */
   onSwap?: (index: number) => void
-  /** A picture for the model's screen (the laptop's), instead of white. */
-  screenImage?: string
+  /** A photo to show on each model's photo spots (see models.ts). */
+  photo?: string
 }
 
 /**
@@ -36,28 +36,50 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
   const black = new THREE.MeshBasicMaterial({ color: 0x0b0b0b })
   const white = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
-  // The screen picture, fitted inside the screen like `object-fit: contain`.
-  let screenMaterial: THREE.MeshBasicMaterial | undefined
-  let screenAspect = 1
-  if (options.screenImage) {
-    new THREE.TextureLoader().load(options.screenImage, (texture) => {
+  // The photo, on every photo spot of the model.
+  let photo: THREE.Texture | undefined
+  let photoAspect = 1
+  const photoMaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide })
+  // Spots that wrap the photo around get their own copy of it, repeated.
+  const wrapMaterials: THREE.MeshBasicMaterial[] = []
+  if (options.photo) {
+    new THREE.TextureLoader().load(options.photo, (texture) => {
       texture.colorSpace = THREE.SRGBColorSpace
       texture.anisotropy = renderer.capabilities.getMaxAnisotropy()
       const image = texture.image as { width: number; height: number }
-      screenAspect = image.width / image.height
-      screenMaterial = new THREE.MeshBasicMaterial({ map: texture })
-      applyScreen()
+      photoAspect = image.width / image.height
+      photo = texture
+      photoMaterial.map = texture
+      photoMaterial.needsUpdate = true
+      applyPhoto()
       if (!running) render()
     })
   }
-  const applyScreen = () => {
-    const screen = model?.group.getObjectByName('screen')
-    if (!(screen instanceof THREE.Mesh) || !screenMaterial) return
-    const box = screen.userData.box as { width: number; height: number }
-    const height = Math.min(box.height, box.width / screenAspect)
-    screen.scale.set(height * screenAspect, height, 1)
-    screen.material = screenMaterial
-    screen.visible = true
+  const applyPhoto = () => {
+    if (!photo || !model) return
+    model.group.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || object.name !== 'photo') return
+      const spot = object.userData.spot as PhotoSpot
+      if (spot.box) {
+        // Fit inside, like `object-fit: contain`.
+        const height = Math.min(spot.box.height, spot.box.width / photoAspect)
+        object.scale.set(height * photoAspect, height, 1)
+      }
+      if (spot.wrap) {
+        const texture = photo!.clone()
+        texture.wrapS = THREE.RepeatWrapping
+        texture.repeat.set(spot.wrap, 1)
+        // Centered on the front of the shape.
+        texture.offset.set(0.5, 0)
+        texture.needsUpdate = true
+        const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
+        wrapMaterials.push(material)
+        object.material = material
+      } else {
+        object.material = photoMaterial
+      }
+      object.visible = true
+    })
   }
 
   // holder: position, hop and squash. turner: the turn and the lean.
@@ -81,12 +103,17 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
       model.group.traverse((object) => {
         if (object instanceof THREE.Mesh) object.geometry.dispose()
       })
+      for (const material of wrapMaterials.splice(0)) {
+        material.map?.dispose()
+        material.dispose()
+      }
     }
     modelIndex = index
     model = buildModel(options.shapes[index], black, white)
-    turner.add(model.group)
-    applyScreen()
+    // Measured on its own, before it takes the current turn, hop and scale.
     const box = new THREE.Box3().setFromObject(model.group)
+    turner.add(model.group)
+    applyPhoto()
     height = box.max.y - box.min.y
     reach = Math.max(Math.hypot(box.max.x, box.max.z), Math.hypot(box.min.x, box.min.z), Math.hypot(box.max.x, box.min.z), Math.hypot(box.min.x, box.max.z))
     frame()
@@ -286,8 +313,12 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
     })
     black.dispose()
     white.dispose()
-    screenMaterial?.map?.dispose()
-    screenMaterial?.dispose()
+    photo?.dispose()
+    photoMaterial.dispose()
+    for (const material of wrapMaterials) {
+      material.map?.dispose()
+      material.dispose()
+    }
     renderer.dispose()
     canvas.remove()
   }

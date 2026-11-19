@@ -1,5 +1,6 @@
 // The black models of the page headers, built from simple shapes. Each one
-// has a single white detail: a screen, cushions, buttons, eyes…
+// has a single white detail: a screen, cushions, buttons, eyes… and a spot
+// for a photo (the home page puts my face there), hidden until one is given.
 
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
@@ -27,6 +28,23 @@ class Builder {
     parent.add(mesh)
     return mesh
   }
+
+  /** A spot for the photo, hidden until the scene puts one there (see PhotoSpot). */
+  photo(geometry: THREE.BufferGeometry, position: Vec, rotation: Vec = [0, 0, 0], parent: THREE.Object3D = this.group, spot: PhotoSpot = {}) {
+    const mesh = this.add(geometry, 'white', position, rotation, parent)
+    mesh.name = 'photo'
+    mesh.userData.spot = spot
+    mesh.visible = false
+    return mesh
+  }
+}
+
+/** How the photo sits on its spot. */
+export interface PhotoSpot {
+  /** Fit inside this box (a 1×1 plane), like `object-fit: contain`. */
+  box?: { width: number; height: number }
+  /** Wrap around (a cone or a lathe): the photo repeats this many times. */
+  wrap?: number
 }
 
 const roundedBox = (width: number, height: number, depth: number, radius: number) =>
@@ -39,13 +57,9 @@ function laptop(b: Builder): Omit<Model, 'group'> {
   lid.rotation.x = -0.26
   b.group.add(lid)
   b.add(roundedBox(2.3, 1.5, 0.08, 0.04), 'black', [0, 0.75, 0], [0, 0, 0], lid)
-  // The screen is white. A picture can show on it (SceneOptions.screenImage),
-  // fitted inside, with white bars on the sides.
+  // The screen, white; the photo fits inside, with white bars on the sides.
   b.add(new THREE.PlaneGeometry(2.04, 1.28), 'white', [0, 0.77, 0.042], [0, 0, 0], lid)
-  const picture = b.add(new THREE.PlaneGeometry(1, 1), 'white', [0, 0.77, 0.043], [0, 0, 0], lid)
-  picture.name = 'screen'
-  picture.userData.box = { width: 2.04, height: 1.28 }
-  picture.visible = false
+  b.photo(new THREE.PlaneGeometry(1, 1), [0, 0.77, 0.043], [0, 0, 0], lid, { box: { width: 2.04, height: 1.28 } })
   return { yaw: -0.35 }
 }
 
@@ -56,6 +70,8 @@ function headphones(b: Builder): Omit<Model, 'group'> {
     b.add(new THREE.CylinderGeometry(0.44, 0.44, 0.32, 56), 'black', [side * 0.98, -0.02, 0], [0, 0, Math.PI / 2])
     // The cushion, on the inner side of the cup.
     b.add(new THREE.TorusGeometry(0.31, 0.11, 20, 56), 'white', [side * 0.76, -0.02, 0], [0, Math.PI / 2, 0])
+    // The photo, on the outer side.
+    b.photo(new THREE.CircleGeometry(0.4, 56), [side * 1.142, -0.02, 0], [0, side * (Math.PI / 2), 0])
   }
   return { yaw: 0.75 }
 }
@@ -104,6 +120,8 @@ function gamepad(b: Builder): Omit<Model, 'group'> {
   for (const [x, y] of [[0, 0.165], [0, -0.165], [0.165, 0], [-0.165, 0]]) {
     b.add(button, 'white', [0.62 + x, 0.1 + y, front], [Math.PI / 2, 0, 0])
   }
+  // The photo, between them.
+  b.photo(new THREE.CircleGeometry(0.21, 48), [0, 0.15, front + 0.002])
   return { yaw: -0.25 }
 }
 
@@ -120,12 +138,10 @@ function sync(b: Builder): Omit<Model, 'group'> {
     b.add(new THREE.SphereGeometry(tube, 24, 16), 'black', [Math.cos(tail) * radius, Math.sin(tail) * radius, 0])
     // Clockwise, the arrow points along (sin, -cos) of its angle.
     const tip = new THREE.Vector2(Math.sin(head), -Math.cos(head))
-    b.add(
-      new THREE.ConeGeometry(0.32, headLength, 48),
-      'white',
-      [Math.cos(head) * radius + tip.x * (headLength / 2), Math.sin(head) * radius + tip.y * (headLength / 2), 0],
-      [0, 0, head + Math.PI],
-    )
+    const position: Vec = [Math.cos(head) * radius + tip.x * (headLength / 2), Math.sin(head) * radius + tip.y * (headLength / 2), 0]
+    b.add(new THREE.ConeGeometry(0.32, headLength, 48), 'white', position, [0, 0, head + Math.PI])
+    // The photo, wrapped around each head.
+    b.photo(new THREE.ConeGeometry(0.325, headLength * 1.01, 48), position, [0, 0, head + Math.PI], b.group, { wrap: 2 })
   }
   return { yaw: -0.3 }
 }
@@ -134,8 +150,9 @@ function robot(b: Builder): Omit<Model, 'group'> {
   b.add(roundedBox(1.6, 1.3, 1.25, 0.3), 'black', [0, 0, 0])
   for (const side of [-1, 1]) {
     b.add(new THREE.CylinderGeometry(0.25, 0.25, 0.2, 36), 'black', [side * 0.88, 0.05, 0], [0, 0, Math.PI / 2])
-    // The eyes.
+    // The eyes, and the photo inside each.
     b.add(new THREE.CylinderGeometry(0.19, 0.19, 0.1, 40), 'white', [side * 0.34, 0.12, 0.6], [Math.PI / 2, 0, 0])
+    b.photo(new THREE.CircleGeometry(0.16, 40), [side * 0.34, 0.12, 0.652])
   }
   b.add(roundedBox(0.56, 0.1, 0.08, 0.04), 'white', [0, -0.3, 0.61])
   b.add(new THREE.CylinderGeometry(0.045, 0.045, 0.46, 16), 'black', [0, 0.86, 0])
@@ -169,9 +186,14 @@ function arcade(b: Builder): Omit<Model, 'group'> {
   })
   body.translate(0, 0, -width / 2).rotateY(-Math.PI / 2)
   b.add(body, 'black')
-  // The screen, leaning back between the control panel and the marquee.
-  const tilt = Math.atan2(0.12, 0.65)
-  b.add(new THREE.BoxGeometry(0.84, 0.6, 0.02), 'white', [0, 1.627, 0.235], [-tilt, 0, 0])
+  // The screen, leaning back between the control panel and the marquee;
+  // the photo fits inside.
+  const screen = new THREE.Group()
+  screen.position.set(0, 1.627, 0.235)
+  screen.rotation.x = -Math.atan2(0.12, 0.65)
+  b.group.add(screen)
+  b.add(new THREE.BoxGeometry(0.84, 0.6, 0.02), 'white', [0, 0, 0], [0, 0, 0], screen)
+  b.photo(new THREE.PlaneGeometry(1, 1), [0, 0, 0.012], [0, 0, 0], screen, { box: { width: 0.84, height: 0.6 } })
   b.add(new THREE.CylinderGeometry(0.03, 0.03, 0.22, 12), 'black', [-0.22, 1.32, 0.5])
   b.add(new THREE.SphereGeometry(0.08, 20, 12), 'black', [-0.22, 1.44, 0.5])
   return { yaw: 0.55 }
@@ -184,36 +206,60 @@ function pin(b: Builder): Omit<Model, 'group'> {
   const baseY = headY - Math.sqrt(radius ** 2 - neck ** 2)
   b.add(new THREE.SphereGeometry(radius, 56, 40), 'black', [0, headY, 0])
   b.add(new THREE.ConeGeometry(neck, baseY, 56), 'black', [0, baseY / 2, 0], [Math.PI, 0, 0])
-  // The dot, showing on both sides.
-  b.add(new THREE.CylinderGeometry(0.25, 0.25, 1.16, 48), 'white', [0, headY, 0], [Math.PI / 2, 0, 0])
+  // The dot, showing on both sides, and the photo in it.
+  // It stands a little out of the sphere, which bulges up to the radius.
+  const dot = radius + 0.03
+  b.add(new THREE.CylinderGeometry(0.25, 0.25, dot * 2, 48), 'white', [0, headY, 0], [Math.PI / 2, 0, 0])
+  b.photo(new THREE.CircleGeometry(0.22, 48), [0, headY, dot + 0.002])
+  b.photo(new THREE.CircleGeometry(0.22, 48), [0, headY, -dot - 0.002], [0, Math.PI, 0])
   return { yaw: -0.2 }
 }
 
 function book(b: Builder): Omit<Model, 'group'> {
-  // A stack of three closed books, their white pages toward you.
+  // A stack of three closed books, their white pages toward you, tipped
+  // forward so the top cover shows: the photo is that cover.
+  const stack = new THREE.Group()
+  stack.rotation.x = 0.5
+  b.group.add(stack)
   const books: Array<{ width: number; thickness: number; depth: number; y: number; turn: number }> = [
     { width: 2.0, thickness: 0.42, depth: 1.3, y: 0, turn: 0.04 },
     { width: 1.8, thickness: 0.34, depth: 1.2, y: 0.42, turn: -0.12 },
     { width: 1.9, thickness: 0.38, depth: 1.25, y: 0.76, turn: 0.1 },
   ]
   const cover = 0.05
-  for (const { width, thickness, depth, y, turn } of books) {
+  for (const [index, { width, thickness, depth, y, turn }] of books.entries()) {
     const one = new THREE.Group()
     one.position.y = y + thickness / 2
     one.rotation.y = turn
-    b.group.add(one)
+    stack.add(one)
     b.add(roundedBox(width, cover, depth, 0.02), 'black', [0, thickness / 2 - cover / 2, 0], [0, 0, 0], one)
     b.add(roundedBox(width, cover, depth, 0.02), 'black', [0, -thickness / 2 + cover / 2, 0], [0, 0, 0], one)
     b.add(roundedBox(width, thickness, cover * 1.6, 0.025), 'black', [0, 0, -depth / 2 + cover * 0.8], [0, 0, 0], one)
     b.add(new THREE.BoxGeometry(width - 0.1, thickness - cover * 2, depth - 0.12), 'white', [0, 0, 0.02], [0, 0, 0], one)
+    if (index === books.length - 1) {
+      // Turned a quarter, as on a real cover: its top away from the spine.
+      b.photo(new THREE.PlaneGeometry(1, 1), [0, thickness / 2 + 0.003, 0], [-Math.PI / 2, 0, -Math.PI / 2], one, {
+        box: { width: depth - 0.2, height: width - 0.3 },
+      })
+    }
   }
-  return { yaw: -0.3 }
+  return { yaw: -0.15 }
 }
 
 function microphone(b: Builder): Omit<Model, 'group'> {
   b.add(new THREE.CapsuleGeometry(0.42, 0.78, 14, 40), 'black', [0, 1.46, 0])
   // The ring between the grille and the body.
   b.add(new THREE.CylinderGeometry(0.44, 0.44, 0.13, 48), 'white', [0, 1.36, 0])
+  // The photo, over the top of the head: its outline turned around the axis,
+  // from the ring up the side, then over the dome, in even steps.
+  const head = 0.428
+  const outline: THREE.Vector2[] = []
+  for (let i = 0; i <= 4; i++) outline.push(new THREE.Vector2(head, 1.425 + (0.425 * i) / 4))
+  for (let i = 1; i <= 8; i++) {
+    const angle = (i / 8) * (Math.PI / 2)
+    outline.push(new THREE.Vector2(Math.max(head * Math.cos(angle), 0.0001), 1.85 + head * Math.sin(angle)))
+  }
+  b.photo(new THREE.LatheGeometry(outline, 64), [0, 0, 0], [0, 0, 0], b.group, { wrap: 2 })
   b.add(new THREE.TorusGeometry(0.6, 0.055, 14, 56, Math.PI), 'black', [0, 1.2, 0], [0, 0, Math.PI])
   for (const side of [-1, 1]) {
     b.add(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 16), 'black', [side * 0.6, 1.2, 0])

@@ -53,7 +53,20 @@ export function Article({ html }: { html: string }) {
       }
     }
 
-    return () => buttons.forEach((button) => button.remove())
+    // A folded section (as on the home page) scrolls into view once opened.
+    const folds = [...element.querySelectorAll<HTMLDetailsElement>('details.more')]
+    const onToggle = (event: Event) => {
+      const fold = event.currentTarget as HTMLDetailsElement
+      if (!fold.open) return
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      fold.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' })
+    }
+    folds.forEach((fold) => fold.addEventListener('toggle', onToggle))
+
+    return () => {
+      buttons.forEach((button) => button.remove())
+      folds.forEach((fold) => fold.removeEventListener('toggle', onToggle))
+    }
   }, [html])
 
   return <div ref={ref} className="markdown" onClick={onClick} dangerouslySetInnerHTML={{ __html: html }} />

@@ -5,6 +5,7 @@ import { site } from '../../site.config.ts'
 import { Layout } from '../components/Layout.tsx'
 import { NotFound } from '../components/NotFound.tsx'
 import styles from '../styles.css?url'
+import bodyFont from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -15,6 +16,8 @@ export const Route = createRootRoute({
       { name: 'theme-color', content: '#0b0b0b' },
     ],
     links: [
+      // The text font, fetched early so the first paint already uses it.
+      { rel: 'preload', href: bodyFont, as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
       { rel: 'stylesheet', href: styles },
       { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
       { rel: 'alternate', type: 'application/atom+xml', title: site.title, href: '/feed.xml' },
