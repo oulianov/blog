@@ -3,8 +3,18 @@
 export const site = {
   title: 'Nicolas Oulianov',
   url: 'https://nicolasoulianov.com',
-  description: 'Tech, data science, programming, and more.',
+  description: 'Stories and notes on maths, data science and programming.',
+  // The home page's title, in search results and link previews.
+  homeTitle: 'Nicolas Oulianov — I build AI products',
   twitter: 'nicolasoulianov',
+  // Who writes the site: the Person of the structured data, with the
+  // profiles of externalLinks as sameAs.
+  author: {
+    name: 'Nicolas Oulianov',
+    alternateName: 'oulianov',
+    jobTitle: 'Software developer',
+    image: '/assets/face_crop_hq2.png',
+  },
   googleSiteVerification: 'qjQg6MPneG0rp9O4_YHCRl-Bx4IduwZrISrWAlu0O-c',
   // The link preview of every page that has no image of its own.
   defaultImage: {

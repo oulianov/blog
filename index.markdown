@@ -5,7 +5,7 @@
 layout: home
 title: "Home"
 nav_order: 1
-description: "Nicolas Oulianov builds AI products: Neural Analog for audio, phosphobot for robots, LLM Colosseum. Stories and notes on AI, data science and programming."
+description: "Nicolas Oulianov is a software developer building Neural Analog, rpgsync, and more. Stories and notes on maths, data science and programming."
 ---
 
 # Nicolas Oulianov
