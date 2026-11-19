@@ -1,10 +1,6 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll site to Pages
+# Builds the site (Vite + TanStack Start, prerendered to static HTML) and
+# deploys it to GitHub Pages.
+name: Deploy site to Pages
 
 on:
   push:
@@ -25,31 +21,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup pnpm
+        # The version comes from "packageManager" in package.json
+        uses: pnpm/action-setup@v6
+      - name: Setup Node
+        uses: actions/setup-node@v7
         with:
-          ruby-version: '3.3' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
+          node-version: 24
+          cache: pnpm
       - name: Setup Pages
-        id: pages
         uses: actions/configure-pages@v6
-      - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
-        env:
-          JEKYLL_ENV: production
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        # Prerenders every page to HTML in ./dist/client
+        run: pnpm build
       - name: Upload artifact
-        # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/client
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages

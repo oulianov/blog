@@ -3,6 +3,7 @@ layout: post
 title: "Robotics"
 nav_order: 5
 description: "What AI robotics is and how its stack works: motors, communication, teleoperation and data collection, and the models that learn to move robots."
+summary: "How AI robotics works, from motors to learning models."
 image:
   path: /assets/robotics/og.jpg
   width: 1200
@@ -12,7 +13,7 @@ date: 2026-11-17 00:00:00 +0100
 categories:
 ---
 
-# What's AI robotics?
+# Robotics + AI
 
 A robot is just a Linux computer moving motors and sticks. For decades, you programmed those motors by hand: move this joint by 30 degrees, then that one by 12. It works great on a factory line, where nothing ever changes.
 

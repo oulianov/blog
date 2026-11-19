@@ -3,6 +3,7 @@ layout: post
 title: "LLM Colosseum"
 nav_order: 6
 description: "LLMs fight each other in real time in Street Fighter III. The story behind LLM Colosseum, a hackathon project with 1.4K stars on GitHub."
+summary: "LLMs fight each other in Street Fighter III."
 image:
   path: /assets/llm-colosseum/og.jpg
   width: 1200

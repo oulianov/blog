@@ -3,6 +3,7 @@ layout: post
 title: "NLP"
 nav_order: 8
 description: "My story with NLP: from BERT at a Berlin VC fund, where it crushed my hand-made model, to the language projects I've worked on since."
+summary: "My story with NLP, from BERT to today."
 date: 2025-03-18 17:55:06 +0100
 categories:
 ---

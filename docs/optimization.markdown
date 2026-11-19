@@ -3,6 +3,7 @@ layout: post
 title: "Optimization"
 nav_order: 7
 description: "What optimization is, and my story with it: electrifying vehicle fleets and solving routing problems with Google OR-Tools and CP-SAT."
+summary: "Electrifying vehicle fleets and solving routing problems with CP-SAT."
 image:
   path: /assets/optimization/og.jpg
   width: 1200

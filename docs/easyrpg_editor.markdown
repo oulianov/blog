@@ -3,6 +3,7 @@ layout: post
 title: "EasyRPG Editor"
 nav_order: 3
 description: "A modern, open source editor for RPG Maker 2000 and 2003 games on macOS, Windows and Linux, with web export, project-wide search and Maniac Patch support."
+summary: "A modern, open source editor for RPG Maker games."
 image:
   path: /assets/easyrpg-editor/og.jpg
   width: 1200
