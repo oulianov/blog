@@ -15,6 +15,35 @@ export interface SceneOptions {
   photo?: string
 }
 
+// ── One WebGL context for every model on the page ──
+// Browsers keep only a handful of WebGL contexts alive (about 16 on desktop,
+// fewer on phones) and drop the oldest past that: with one per model, the
+// home header lost its own once the tiles below had theirs. So all models
+// draw with this one renderer, off screen, and each copies its picture onto
+// a plain 2D canvas of its own.
+let shared: { renderer: THREE.WebGLRenderer; users: number } | undefined
+
+function acquireRenderer() {
+  if (!shared) {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    // Sizes below are in device pixels.
+    renderer.setPixelRatio(1)
+    renderer.setClearColor(0x000000, 0)
+    renderer.setScissorTest(true)
+    shared = { renderer, users: 0 }
+  }
+  shared.users += 1
+  return shared.renderer
+}
+
+function releaseRenderer() {
+  if (!shared || --shared.users > 0) return
+  shared.renderer.dispose()
+  // dispose() alone keeps the context until garbage collection.
+  shared.renderer.forceContextLoss()
+  shared = undefined
+}
+
 /**
  * Draws a black model on a flat color, swaying like a dancer. It leans toward the pointer; a drag turns it, and a click makes it
  * hop and spin. Returns a cleanup function.
@@ -22,11 +51,12 @@ export interface SceneOptions {
 export function mountScene(container: HTMLElement, options: SceneOptions) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.setClearColor(0x000000, 0)
-  const canvas = renderer.domElement
+  const renderer = acquireRenderer()
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')!
   container.appendChild(canvas)
+  let pixelWidth = 0
+  let pixelHeight = 0
 
   const scene = new THREE.Scene()
   // A narrow field of view keeps the shapes flat, like cut-outs.
@@ -131,7 +161,11 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
     const width = container.clientWidth
     const heightPx = container.clientHeight
     if (!width || !heightPx) return
-    renderer.setSize(width, heightPx, false)
+    const ratio = Math.min(window.devicePixelRatio, 2)
+    pixelWidth = Math.round(width * ratio)
+    pixelHeight = Math.round(heightPx * ratio)
+    canvas.width = pixelWidth
+    canvas.height = pixelHeight
     camera.aspect = width / heightPx
     camera.updateProjectionMatrix()
     halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z
@@ -235,7 +269,20 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
     turner.rotation.set(tilt, yaw + model.yaw + lean.x * 0.35, reducedMotion ? 0 : Math.sin(time * 1.7) * 0.045)
     holder.position.set(lean.x * halfWidth * 0.04, baseY + (hop + bob) * scale, 0)
     holder.scale.set(scale / Math.sqrt(squash), scale * squash, scale / Math.sqrt(squash))
+    if (!pixelWidth || !pixelHeight) return
+
+    // The shared canvas only grows; this model draws in its bottom-left corner.
+    const size = renderer.getSize(new THREE.Vector2())
+    if (size.x < pixelWidth || size.y < pixelHeight) {
+      renderer.setSize(Math.max(size.x, pixelWidth), Math.max(size.y, pixelHeight), false)
+      size.set(Math.max(size.x, pixelWidth), Math.max(size.y, pixelHeight))
+    }
+    renderer.setViewport(0, 0, pixelWidth, pixelHeight)
+    renderer.setScissor(0, 0, pixelWidth, pixelHeight)
     renderer.render(scene, camera)
+    // Copied in the same task as the render, while the picture is still there.
+    context.clearRect(0, 0, pixelWidth, pixelHeight)
+    context.drawImage(renderer.domElement, 0, size.y - pixelHeight, pixelWidth, pixelHeight, 0, 0, pixelWidth, pixelHeight)
   }
 
   const tick = (now: number) => {
@@ -319,7 +366,7 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
       material.map?.dispose()
       material.dispose()
     }
-    renderer.dispose()
+    releaseRenderer()
     canvas.remove()
   }
 }
