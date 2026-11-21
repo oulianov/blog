@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import type { ShapeName } from '../../site.config.ts'
 
 interface SilhouetteProps {
@@ -12,13 +12,15 @@ interface SilhouetteProps {
   onSwap?: (index: number) => void
   /** A photo for the models' photo spots (my face, on the home page). */
   photo?: string
+  /** Shown over the model; `--model-bottom` says where its base is. */
+  children?: ReactNode
 }
 
 /**
  * A black 3D model on a flat color, with one white detail.
  * The 3D code loads once the frame is near the screen and the browser is idle.
  */
-export function Silhouette({ shapes, label, interactive = true, hopOnHover = false, onSwap, photo }: SilhouetteProps) {
+export function Silhouette({ shapes, label, interactive = true, hopOnHover = false, onSwap, photo, children }: SilhouetteProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const onSwapRef = useRef(onSwap)
   onSwapRef.current = onSwap
@@ -77,6 +79,8 @@ export function Silhouette({ shapes, label, interactive = true, hopOnHover = fal
       ref={containerRef}
       className="silhouette"
       {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
-    />
+    >
+      {children}
+    </div>
   )
 }

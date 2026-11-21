@@ -155,6 +155,11 @@ export function mountScene(container: HTMLElement, options: SceneOptions) {
     scale = Math.min((2 * halfHeight * 0.7) / height, (halfWidth * 0.86) / reach)
     baseY = -halfHeight * 0.08 - (height * scale) / 2
     holder.scale.setScalar(scale)
+    // Where the model's base is, from the top, for things placed under it:
+    // its lowest point when turned closest to the camera (perspective drops it).
+    const lowest = (baseY * camera.position.z) / (camera.position.z - reach * scale)
+    const bottom = (0.5 - lowest / (2 * halfHeight)) * container.clientHeight
+    container.style.setProperty('--model-bottom', `${Math.round(bottom)}px`)
   }
 
   const resize = () => {

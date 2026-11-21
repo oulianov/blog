@@ -39,6 +39,8 @@ const heroCycle: Array<{ shape: ShapeName; color: ColorName }> = [
  */
 export function HomeHero({ heading, lead, bio }: { heading: string; lead?: string; bio: string }) {
   const [index, setIndex] = useState(0)
+  // The hint under the model goes once it has been clicked.
+  const [clicked, setClicked] = useState(false)
   const current = heroCycle[index]
 
   return (
@@ -58,8 +60,17 @@ export function HomeHero({ heading, lead, bio }: { heading: string; lead?: strin
             shapes={heroCycle.map((item) => item.shape)}
             photo="/assets/face-screen.webp"
             label="Nicolas Oulianov's face on a black laptop. Click it for the next model."
-            onSwap={setIndex}
-          />
+            onSwap={(next) => {
+              setIndex(next)
+              setClicked(true)
+            }}
+          >
+            {!clicked && (
+              <span className="click-hint" aria-hidden="true">
+                Click me
+              </span>
+            )}
+          </Silhouette>
         </div>
       </div>
       <div className="home-bio">

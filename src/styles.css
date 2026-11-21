@@ -336,6 +336,39 @@ img {
   height: min(100vh, 52rem);
 }
 
+/* Room under the model, for the hint. */
+.home-hero-stage .silhouette {
+  bottom: 2.5rem;
+}
+
+/* Under the model: shows up after 2 s, then slowly breathes in and out. */
+.click-hint {
+  position: absolute;
+  left: 50%;
+  /* Just under the model's base (set by the scene). */
+  top: calc(var(--model-bottom, 100%) + 1.4rem);
+  translate: -50% 0;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--black);
+  pointer-events: none;
+  opacity: 0;
+  animation: click-hint 3.2s ease-in-out 2s infinite;
+}
+
+@keyframes click-hint {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 /* The bio, on the color: black text, black links, years as black tags. */
 
 .home-bio {
@@ -952,7 +985,7 @@ img {
 
   .home-hero-stage {
     position: relative;
-    height: 21rem;
+    height: 24rem;
   }
 
   .home-bio {
@@ -995,5 +1028,10 @@ img {
   *,
   .home-bio .more::details-content {
     transition: none !important;
+  }
+
+  .click-hint {
+    animation: none;
+    opacity: 1;
   }
 }
